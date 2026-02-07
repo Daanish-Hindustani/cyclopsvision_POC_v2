@@ -525,5 +525,12 @@
       ]
     },
     "created_at": "2026-02-07T18:17:17.185807"
+  },
+  {
+    "id": "01582a98-fb87-4069-9619-8467cee66b52",
+    "title": "POC_test_v3",
+    "demo_video_url": "storage/videos/ef8e8012-deea-45d1-bb49-877d76b48595.mov",
+    "ai_teacher_config": null,
+    "created_at": "2026-02-07T18:42:34.421477"
   }
 ]
