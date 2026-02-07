@@ -25,6 +25,7 @@ async def lifespan(app: FastAPI):
     
     # Ensure storage directories exist
     Path("storage/videos").mkdir(parents=True, exist_ok=True)
+    Path("storage/audio").mkdir(parents=True, exist_ok=True)
     
     # Check for API key
     # Check for API key

@@ -27,6 +27,7 @@ For each step, you must identify:
 2. The specific TOOLS used
 3. The precise ACTION/MOTION
 4. Potential MISTAKES beginners might make
+5. A direct VOICE INSTRUCTION for the user
 
 === RULES ===
 
@@ -34,6 +35,7 @@ For each step, you must identify:
 2. Each step must show ONE distinct action
 3. Provide EXACT start/end times in seconds (e.g., 2.5, not frame numbers)
 4. Steps should be granular - one action per step
+5. Voice instruction should be clear, concise, and imperative (e.g. "Pick up the screwdriver")
 
 === JSON OUTPUT ===
 
@@ -44,8 +46,9 @@ For each step, you must identify:
       "title": "Short action title",
       "goal": "Why is this step being done?",
       "tools": ["tool1", "tool2"],
-      "action_detail": "Precise description of the movement (e.g. 'Rotate 90 degrees clockwise')",
+      "action_detail": "Precise description of the movement",
       "common_mistakes": ["Mistake 1", "Mistake 2"],
+      "instruction": "Speakable instruction for the user e.g. 'Rotate the driver clockwise until it clicks'",
       "start_time": 2.5,
       "end_time": 5.0,
       "expected_objects": ["tool1", "tool2"], 
@@ -115,16 +118,23 @@ class AIVideoService(ABC):
                 else:
                     description = "\n".join(description_parts)
 
+
                 step = Step(
                     step_id=s.get("step_id", len(steps) + 1),
                     title=s.get("title", "Untitled Step"),
                     description=description,
                     expected_objects=s.get("expected_objects", tools),
                     expected_motion=s.get("expected_motion", ""),
+                    instruction=s.get("instruction", ""),
                     start_time=float(s.get("start_time", 0)),
                     end_time=float(s.get("end_time", 0))
                 )
                 steps.append(step)
+            
+            # If lesson_id is passed, we can use it to organize audio, 
+            # but _parse_response usually creates the config object first.
+            # We'll handle audio generation in the caller (analyze_video) 
+            # where we have access to the AI client.
             
             return TeacherConfig(
                 lesson_id=lesson_id,
@@ -365,7 +375,35 @@ class OpenAIVideoService(AIVideoService):
         )
         
         content = response.choices[0].message.content
-        return self._parse_response(content)
+        config = self._parse_response(content, lesson_id=os.path.basename(video_path).split('.')[0] if video_path else "") # Basic ID if not provided
+        
+        # Generate audio for each step
+        print(f"[OpenAI] Generating audio for {len(config.steps)} steps...")
+        for step in config.steps:
+            if step.instruction:
+                try:
+                    audio_filename = f"{config.lesson_id}_step_{step.step_id}.mp3"
+                    audio_path = f"storage/audio/{audio_filename}"
+                    
+                    # Ensure directory exists for specific lesson if we organize by folder later, 
+                    # but for now usage is flat or needs simple path. 
+                    # Actually, let's keep it simple: storage/audio/{filename}
+                    
+                    await self._generate_audio(step.instruction, audio_path)
+                    step.audio_url = f"/storage/audio/{audio_filename}"
+                except Exception as e:
+                    print(f"[OpenAI] Failed to generate audio for step {step.step_id}: {e}")
+        
+        return config
+
+    async def _generate_audio(self, text: str, output_path: str):
+        """Generate TTS audio using OpenAI"""
+        response = await self.client.audio.speech.create(
+            model="tts-1",
+            voice="alloy",
+            input=text
+        )
+        response.stream_to_file(output_path)
 
     async def generate_correction_overlay(self, step: Step, mistake_type: str, frame_base64: Optional[str] = None) -> dict:
         """Generate diagram overlay instructions for a detected mistake using GPT-4o"""

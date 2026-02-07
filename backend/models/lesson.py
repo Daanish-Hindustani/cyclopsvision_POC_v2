@@ -23,6 +23,11 @@ class Step(BaseModel):
     expected_duration_seconds: int = Field(default=10, description="Expected time to complete")
     mistake_patterns: List[MistakePattern] = Field(default_factory=list, description="Common mistakes")
     correction_mode: str = Field(default="diagram_overlay_audio", description="How to correct mistakes")
+    
+    # Audio/Voice Guidance
+    instruction: str = Field(default="", description="Spoken instruction for the user")
+    audio_url: Optional[str] = Field(default=None, description="URL to generated TTS audio")
+    
     # Video snippet fields
     start_time: float = Field(default=0.0, description="Start time in source video (seconds)")
     end_time: float = Field(default=0.0, description="End time in source video (seconds)")
