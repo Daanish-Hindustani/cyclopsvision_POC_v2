@@ -22,6 +22,11 @@ def build_video_analysis_prompt(title: str = "") -> str:
 === TASK ===
 
 Analyze this video and extract procedural steps with EXACT timestamps.
+For each step, you must identify:
+1. The GOAL of the step
+2. The specific TOOLS used
+3. The precise ACTION/MOTION
+4. Potential MISTAKES beginners might make
 
 === RULES ===
 
@@ -30,14 +35,6 @@ Analyze this video and extract procedural steps with EXACT timestamps.
 3. Provide EXACT start/end times in seconds (e.g., 2.5, not frame numbers)
 4. Steps should be granular - one action per step
 
-=== DESCRIPTION FORMAT ===
-
-Each description MUST include:
-- BEFORE: What you see at the START of this action
-- ACTION: The SINGLE specific movement happening
-- AFTER: What it looks like when done correctly
-- FAILURE: What wrong execution looks like
-
 === JSON OUTPUT ===
 
 {{
@@ -45,10 +42,13 @@ Each description MUST include:
     {{
       "step_id": 1,
       "title": "Short action title",
-      "description": "BEFORE: [state]. ACTION: [movement]. AFTER: [result]. FAILURE: [what's wrong].",
+      "goal": "Why is this step being done?",
+      "tools": ["tool1", "tool2"],
+      "action_detail": "Precise description of the movement (e.g. 'Rotate 90 degrees clockwise')",
+      "common_mistakes": ["Mistake 1", "Mistake 2"],
       "start_time": 2.5,
       "end_time": 5.0,
-      "expected_objects": ["object1", "object2"],
+      "expected_objects": ["tool1", "tool2"], 
       "expected_motion": "motion_type"
     }}
   ]
@@ -93,11 +93,33 @@ class AIVideoService(ABC):
             
             steps = []
             for s in steps_data:
+                # Construct rich description
+                goal = s.get("goal", "")
+                tools = s.get("tools", [])
+                action = s.get("action_detail", "")
+                mistakes = s.get("common_mistakes", [])
+                
+                description_parts = []
+                if goal:
+                    description_parts.append(f"**Goal:** {goal}")
+                if tools:
+                    description_parts.append(f"**Tools:** {', '.join(tools)}")
+                if action:
+                    description_parts.append(f"**Action:** {action}")
+                if mistakes:
+                    description_parts.append(f"**Mistakes:** {'; '.join(mistakes)}")
+                
+                # Fallback if new fields are empty (backward compatibility)
+                if not description_parts and "description" in s:
+                    description = s["description"]
+                else:
+                    description = "\n".join(description_parts)
+
                 step = Step(
                     step_id=s.get("step_id", len(steps) + 1),
                     title=s.get("title", "Untitled Step"),
-                    description=s.get("description", ""),
-                    expected_objects=s.get("expected_objects", []),
+                    description=description,
+                    expected_objects=s.get("expected_objects", tools),
                     expected_motion=s.get("expected_motion", ""),
                     start_time=float(s.get("start_time", 0)),
                     end_time=float(s.get("end_time", 0))

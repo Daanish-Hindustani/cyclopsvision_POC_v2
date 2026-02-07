@@ -145,5 +145,252 @@
       ]
     },
     "created_at": "2026-01-13T20:54:13.300692"
+  },
+  {
+    "id": "0bdbbad0-8eab-4d0b-98ab-94f30282a9a5",
+    "title": "demo_v1_light_bub_replacment",
+    "demo_video_url": "storage/videos/c05c250d-930b-494f-843c-dbd4dea2f50e.mov",
+    "ai_teacher_config": {
+      "lesson_id": "0bdbbad0-8eab-4d0b-98ab-94f30282a9a5",
+      "total_steps": 9,
+      "steps": [
+        {
+          "step_id": 1,
+          "title": "Hold the light bulb",
+          "description": "BEFORE: The hand is not holding the light bulb. ACTION: The hand is holding the light bulb. AFTER: The hand is holding the light bulb. FAILURE: The hand is not holding the light bulb.",
+          "expected_objects": [
+            "hand",
+            "light bulb"
+          ],
+          "expected_motion": "holding",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 0.0,
+          "end_time": 10.8,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/1"
+        },
+        {
+          "step_id": 2,
+          "title": "Remove the glass cover",
+          "description": "BEFORE: The glass cover is still on the light bulb. ACTION: The glass cover is being removed. AFTER: The glass cover is off the light bulb. FAILURE: The glass cover is still on the light bulb.",
+          "expected_objects": [
+            "glass cover",
+            "light bulb"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 10.8,
+          "end_time": 21.5,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/2"
+        },
+        {
+          "step_id": 3,
+          "title": "Remove the metal cover",
+          "description": "BEFORE: The metal cover is still on the light bulb. ACTION: The metal cover is being removed. AFTER: The metal cover is off the light bulb. FAILURE: The metal cover is still on the light bulb.",
+          "expected_objects": [
+            "metal cover",
+            "light bulb"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 21.5,
+          "end_time": 32.3,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/3"
+        },
+        {
+          "step_id": 4,
+          "title": "Remove the light bulb",
+          "description": "BEFORE: The light bulb is still in the socket. ACTION: The light bulb is being removed. AFTER: The light bulb is out of the socket. FAILURE: The light bulb is still in the socket.",
+          "expected_objects": [
+            "light bulb",
+            "socket"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 32.3,
+          "end_time": 43.0,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/4"
+        },
+        {
+          "step_id": 5,
+          "title": "Remove the glass cover",
+          "description": "BEFORE: The glass cover is still on the light bulb. ACTION: The glass cover is being removed. AFTER: The glass cover is off the light bulb. FAILURE: The glass cover is still on the light bulb.",
+          "expected_objects": [
+            "glass cover",
+            "light bulb"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 43.0,
+          "end_time": 53.8,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/5"
+        },
+        {
+          "step_id": 6,
+          "title": "Remove the metal cover",
+          "description": "BEFORE: The metal cover is still on the light bulb. ACTION: The metal cover is being removed. AFTER: The metal cover is off the light bulb. FAILURE: The metal cover is still on the light bulb.",
+          "expected_objects": [
+            "metal cover",
+            "light bulb"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 53.8,
+          "end_time": 64.5,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/6"
+        },
+        {
+          "step_id": 7,
+          "title": "Remove the light bulb",
+          "description": "BEFORE: The light bulb is still in the socket. ACTION: The light bulb is being removed. AFTER: The light bulb is out of the socket. FAILURE: The light bulb is still in the socket.",
+          "expected_objects": [
+            "light bulb",
+            "socket"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 64.5,
+          "end_time": 75.3,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/7"
+        },
+        {
+          "step_id": 8,
+          "title": "Remove the glass cover",
+          "description": "BEFORE: The glass cover is still on the light bulb. ACTION: The glass cover is being removed. AFTER: The glass cover is off the light bulb. FAILURE: The glass cover is still on the light bulb.",
+          "expected_objects": [
+            "glass cover",
+            "light bulb"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 75.3,
+          "end_time": 86.0,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/8"
+        },
+        {
+          "step_id": 9,
+          "title": "Remove the metal cover",
+          "description": "BEFORE: The metal cover is still on the light bulb. ACTION: The metal cover is being removed. AFTER: The metal cover is off the light bulb. FAILURE: The metal cover is still on the light bulb.",
+          "expected_objects": [
+            "metal cover",
+            "light bulb"
+          ],
+          "expected_motion": "removing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 86.0,
+          "end_time": 96.8,
+          "clip_url": "/lessons/0bdbbad0-8eab-4d0b-98ab-94f30282a9a5/clips/9"
+        }
+      ]
+    },
+    "created_at": "2026-02-07T17:03:57.836834"
+  },
+  {
+    "id": "ceac0d5f-904f-46da-8ad6-5270a2409717",
+    "title": "Untitled Lesson",
+    "demo_video_url": "storage/videos/b4edd6a5-75dd-4c47-8a66-26e6ef8cf98d.mov",
+    "ai_teacher_config": {
+      "lesson_id": "ceac0d5f-904f-46da-8ad6-5270a2409717",
+      "total_steps": 5,
+      "steps": [
+        {
+          "step_id": 1,
+          "title": "Remove screws from the light cover",
+          "description": "BEFORE: Light cover with screws visible. ACTION: Unscrewing the screws from the cover. AFTER: Screws are removed and set aside. FAILURE: Screws are not fully removed or stripped.",
+          "expected_objects": [
+            "light cover",
+            "screwdriver"
+          ],
+          "expected_motion": "rotation_counterclockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 5.1,
+          "end_time": 15.3,
+          "clip_url": "/lessons/ceac0d5f-904f-46da-8ad6-5270a2409717/clips/1"
+        },
+        {
+          "step_id": 2,
+          "title": "Detach the light cover",
+          "description": "BEFORE: Light cover is unscrewed but still attached. ACTION: Lifting the cover off the base. AFTER: Cover is completely detached. FAILURE: Cover is stuck or not fully removed.",
+          "expected_objects": [
+            "light cover"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 15.3,
+          "end_time": 20.4,
+          "clip_url": "/lessons/ceac0d5f-904f-46da-8ad6-5270a2409717/clips/2"
+        },
+        {
+          "step_id": 3,
+          "title": "Disconnect wires from the base",
+          "description": "BEFORE: Wires connected to the base. ACTION: Detaching the wires from the base. AFTER: Wires are completely disconnected. FAILURE: Wires are still attached or damaged.",
+          "expected_objects": [
+            "wires",
+            "base"
+          ],
+          "expected_motion": "disconnecting",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 20.4,
+          "end_time": 30.6,
+          "clip_url": "/lessons/ceac0d5f-904f-46da-8ad6-5270a2409717/clips/3"
+        },
+        {
+          "step_id": 4,
+          "title": "Reattach the light cover",
+          "description": "BEFORE: Light cover is detached. ACTION: Placing the cover back onto the base. AFTER: Cover is aligned and ready to be secured. FAILURE: Cover is misaligned or not sitting properly.",
+          "expected_objects": [
+            "light cover",
+            "base"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 30.6,
+          "end_time": 40.8,
+          "clip_url": "/lessons/ceac0d5f-904f-46da-8ad6-5270a2409717/clips/4"
+        },
+        {
+          "step_id": 5,
+          "title": "Secure the light cover with screws",
+          "description": "BEFORE: Light cover is positioned on the base. ACTION: Screwing the cover back onto the base. AFTER: Cover is securely attached. FAILURE: Screws are loose or not fully tightened.",
+          "expected_objects": [
+            "screwdriver",
+            "screws"
+          ],
+          "expected_motion": "rotation_clockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 40.8,
+          "end_time": 56.0,
+          "clip_url": "/lessons/ceac0d5f-904f-46da-8ad6-5270a2409717/clips/5"
+        }
+      ]
+    },
+    "created_at": "2026-02-07T17:10:06.218467"
   }
 ]
