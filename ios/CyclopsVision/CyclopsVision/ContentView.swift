@@ -24,7 +24,7 @@ struct ContentView: View {
 
 struct SettingsView: View {
     @EnvironmentObject var networkService: NetworkService
-    @AppStorage("backendURL") private var backendURL = "http://192.168.0.149:8000"
+    @AppStorage("backendURL") private var backendURL = "http://192.168.0.156:8000"
     
     var body: some View {
         NavigationStack {

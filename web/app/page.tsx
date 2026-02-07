@@ -18,6 +18,7 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [apiStatus, setApiStatus] = useState<"checking" | "online" | "offline">("checking");
+  const [regenerating, setRegenerating] = useState(false);
 
   // Check API health on mount
   useEffect(() => {
@@ -95,6 +96,24 @@ export default function Home() {
     }
   };
 
+  const handleRegenerateClips = async (lessonId: string) => {
+    setRegenerating(true);
+    setError(null);
+
+    try {
+      const updatedLesson = await api.regenerateClips(lessonId);
+      setSelectedLesson(updatedLesson);
+      // Update the lesson in the list too
+      setLessons((prev) =>
+        prev.map((l) => (l.id === lessonId ? updatedLesson : l))
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to regenerate clips");
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
   return (
     <main className="min-h-screen">
       {/* Header */}
@@ -122,7 +141,7 @@ export default function Home() {
               {/* API Status */}
               <div className="flex items-center gap-2 text-sm">
                 <div className={`w-2 h-2 rounded-full ${apiStatus === "online" ? "bg-green-500" :
-                    apiStatus === "offline" ? "bg-red-500" : "bg-yellow-500"
+                  apiStatus === "offline" ? "bg-red-500" : "bg-yellow-500"
                   }`} />
                 <span className="text-gray-400">
                   {apiStatus === "online" ? "Backend Connected" :
@@ -135,8 +154,8 @@ export default function Home() {
                 <button
                   onClick={() => setViewMode("create")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${viewMode === "create"
-                      ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                      : "text-gray-400 hover:text-white hover:bg-gray-800"
+                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                    : "text-gray-400 hover:text-white hover:bg-gray-800"
                     }`}
                 >
                   Create
@@ -144,8 +163,8 @@ export default function Home() {
                 <button
                   onClick={() => { setViewMode("list"); loadLessons(); }}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${viewMode === "list" || viewMode === "detail"
-                      ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                      : "text-gray-400 hover:text-white hover:bg-gray-800"
+                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                    : "text-gray-400 hover:text-white hover:bg-gray-800"
                     }`}
                 >
                   Lessons ({lessons.length})
@@ -377,6 +396,29 @@ export default function Home() {
                           d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                       </svg>
                       Open in iOS App
+                    </button>
+                    <button
+                      onClick={() => handleRegenerateClips(selectedLesson.id)}
+                      disabled={regenerating}
+                      className="btn-secondary w-full flex items-center justify-center gap-2"
+                    >
+                      {regenerating ? (
+                        <>
+                          <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Generating Clips...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                          </svg>
+                          Regenerate Video Clips
+                        </>
+                      )}
                     </button>
                     <button
                       onClick={() => handleDeleteLesson(selectedLesson.id)}

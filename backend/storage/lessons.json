@@ -1,134 +1,149 @@
 [
   {
-    "id": "61073f58-9a3d-4172-a584-c058f9b03eb2",
+    "id": "53c6b854-7c64-4150-8ae2-39b0b89266f0",
     "title": "Untitled Lesson",
-    "demo_video_url": "storage/videos/52f6a984-c323-4e2b-bb73-ce321c0a0b3a.mp4",
+    "demo_video_url": "storage/videos/25ded295-d5bf-42ff-b711-4067794a0739.mp4",
     "ai_teacher_config": {
-      "lesson_id": "Untitled Lesson",
-      "total_steps": 10,
+      "lesson_id": "53c6b854-7c64-4150-8ae2-39b0b89266f0",
+      "total_steps": 9,
       "steps": [
         {
           "step_id": 1,
-          "title": "Starting with the paper",
-          "description": "Take a piece of paper and lay it flat on the table. Ensure that the edges are straight and the paper is evenly spread out.",
+          "title": "Fold paper diagonally",
+          "description": "BEFORE: A square sheet of paper is flat on the table. ACTION: Fold the paper diagonally to form a triangle. AFTER: A triangle shape is formed. FAILURE: The edges do not align perfectly.",
           "expected_objects": [
-            "paper"
+            "square paper"
           ],
-          "expected_motion": "positioning",
+          "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 14.0,
+          "end_time": 27.9,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/1"
         },
         {
           "step_id": 2,
-          "title": "Creating a crease",
-          "description": "Fold the paper in half along one of its edges. Make sure the fold is clean and straight, creating a crisp crease in the center.",
+          "title": "Fold corners to center",
+          "description": "BEFORE: A triangle shape is on the table. ACTION: Fold the two corners of the triangle to the center line. AFTER: A kite shape is formed. FAILURE: The corners do not meet at the center line.",
           "expected_objects": [
-            "paper"
+            "triangle paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 27.9,
+          "end_time": 41.9,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/2"
         },
         {
           "step_id": 3,
-          "title": "Making a mountain fold",
-          "description": "Bring the two ends of the paper together and press them down firmly. This will create a mountain fold, where the paper is folded upwards in the center.",
+          "title": "Fold top point down",
+          "description": "BEFORE: A kite shape is on the table. ACTION: Fold the top point of the kite down to the bottom point. AFTER: A diamond shape is formed. FAILURE: The top point does not align with the bottom point.",
           "expected_objects": [
-            "paper"
+            "kite paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 41.9,
+          "end_time": 55.8,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/3"
         },
         {
           "step_id": 4,
-          "title": "Creating a valley fold",
-          "description": "Fold the paper back out along the same edge where you made the mountain fold. This will create a valley fold, where the paper is folded downwards in the center.",
+          "title": "Fold sides to center",
+          "description": "BEFORE: A diamond shape is on the table. ACTION: Fold the sides of the diamond to the center line. AFTER: A narrow kite shape is formed. FAILURE: The sides do not align with the center line.",
           "expected_objects": [
-            "paper"
+            "diamond paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 55.8,
+          "end_time": 69.8,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/4"
         },
         {
           "step_id": 5,
-          "title": "Making another mountain fold",
-          "description": "Bring the two ends of the paper together again and press them down firmly. This will create another mountain fold.",
+          "title": "Fold bottom point up",
+          "description": "BEFORE: A narrow kite shape is on the table. ACTION: Fold the bottom point up to the top point. AFTER: A smaller diamond shape is formed. FAILURE: The bottom point does not align with the top point.",
           "expected_objects": [
-            "paper"
+            "narrow kite paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 69.8,
+          "end_time": 83.7,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/5"
         },
         {
           "step_id": 6,
-          "title": "Creating a valley fold",
-          "description": "Fold the paper back out along the same edge where you made the mountain fold. This will create another valley fold.",
+          "title": "Create head by folding",
+          "description": "BEFORE: A smaller diamond shape is on the table. ACTION: Fold the top point down to create a head shape. AFTER: A head shape is formed on the top. FAILURE: The head shape is not distinct.",
           "expected_objects": [
-            "paper"
+            "small diamond paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 83.7,
+          "end_time": 97.7,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/6"
         },
         {
           "step_id": 7,
-          "title": "Making a final mountain fold",
-          "description": "Bring the two ends of the paper together once more and press them down firmly. This will create a final mountain fold.",
+          "title": "Form the neck",
+          "description": "BEFORE: A head shape is on top of the paper. ACTION: Fold the paper to form a neck shape. AFTER: A neck shape is visible. FAILURE: The neck is not properly aligned.",
           "expected_objects": [
-            "paper"
+            "head paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 97.7,
+          "end_time": 111.7,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/7"
         },
         {
           "step_id": 8,
-          "title": "Creating a valley fold",
-          "description": "Fold the paper back out along the same edge where you made the final mountain fold. This will create a final valley fold.",
+          "title": "Adjust the head",
+          "description": "BEFORE: A neck shape is visible. ACTION: Adjust the head to make it more distinct. AFTER: A distinct head shape is formed. FAILURE: The head is not distinct or aligned.",
           "expected_objects": [
-            "paper"
+            "neck paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 111.7,
+          "end_time": 125.6,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/8"
         },
         {
           "step_id": 9,
-          "title": "Making a final mountain fold",
-          "description": "Bring the two ends of the paper together once more and press them down firmly. This will create a final mountain fold.",
+          "title": "Complete the swan",
+          "description": "BEFORE: A swan shape is almost complete. ACTION: Make final adjustments to the swan shape. AFTER: A complete swan shape is visible. FAILURE: The swan shape is not symmetrical.",
           "expected_objects": [
-            "paper"
+            "swan paper"
           ],
           "expected_motion": "folding",
           "expected_duration_seconds": 10,
           "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
-        },
-        {
-          "step_id": 10,
-          "title": "Creating a valley fold",
-          "description": "Fold the paper back out along the same edge where you made the final mountain fold. This will create a final valley fold.",
-          "expected_objects": [
-            "paper"
-          ],
-          "expected_motion": "folding",
-          "expected_duration_seconds": 10,
-          "mistake_patterns": [],
-          "correction_mode": "diagram_overlay_audio"
+          "correction_mode": "diagram_overlay_audio",
+          "start_time": 125.6,
+          "end_time": 139.6,
+          "clip_url": "/lessons/53c6b854-7c64-4150-8ae2-39b0b89266f0/clips/9"
         }
       ]
     },
-    "created_at": "2026-01-11T21:14:31.166488"
+    "created_at": "2026-01-13T20:54:13.300692"
   }
 ]

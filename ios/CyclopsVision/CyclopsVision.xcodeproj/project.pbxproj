@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16C3AA742F170AEA00C458A7 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C3AA722F170AEA00C458A7 /* SkeletonView.swift */; };
+		16C3AA752F170AEA00C458A7 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C3AA732F170AEA00C458A7 /* VideoPlayerView.swift */; };
 		1A1A1A1A1A1A1A1A /* CyclopsVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A2A2A2A2A2A2A /* CyclopsVisionApp.swift */; };
 		1A1A1A1A1A1A1A1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A2A2A2A2A2A2B /* ContentView.swift */; };
 		1A1A1A1A1A1A1A1C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A2A2A2A2A2A2C /* Models.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		16C3AA722F170AEA00C458A7 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
+		16C3AA732F170AEA00C458A7 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		2A2A2A2A2A2A2A2A /* CyclopsVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclopsVisionApp.swift; sourceTree = "<group>"; };
 		2A2A2A2A2A2A2A2B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2A2A2A2A2A2A2A2C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 		AAAAAAAAAAAAAAAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				16C3AA722F170AEA00C458A7 /* SkeletonView.swift */,
+				16C3AA732F170AEA00C458A7 /* VideoPlayerView.swift */,
 				2A2A2A2A2A2A2A32 /* LessonPickerView.swift */,
 				2A2A2A2A2A2A2A33 /* ARSessionView.swift */,
 			);
@@ -186,6 +192,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16C3AA742F170AEA00C458A7 /* SkeletonView.swift in Sources */,
+				16C3AA752F170AEA00C458A7 /* VideoPlayerView.swift in Sources */,
 				1A1A1A1A1A1A1A1A /* CyclopsVisionApp.swift in Sources */,
 				1A1A1A1A1A1A1A1B /* ContentView.swift in Sources */,
 				1A1A1A1A1A1A1A1C /* Models.swift in Sources */,

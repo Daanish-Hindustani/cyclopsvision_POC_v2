@@ -1,4 +1,6 @@
 import SwiftUI
+import AVFoundation
+import Combine
 
 struct ARSessionView: View {
     let lesson: Lesson
@@ -15,87 +17,172 @@ struct ARSessionView: View {
     @State private var isPaused = false
     @State private var showControls = true
     
+    // Ghost Mode
+    @State private var ghostOpacity: Double = 0.3
+    @State private var showGhostControls = false
+    
+    init(lesson: Lesson) {
+        self.lesson = lesson
+        print("🚀 ARSessionView.init() called for lesson: \(lesson.id)")
+    }
+    
     var body: some View {
-        ZStack {
-            // Camera feed
-            CameraPreviewView(cameraService: cameraService)
-                .ignoresSafeArea()
-            
-            // Overlay layer
-            if showOverlay, let overlay = currentOverlay {
-                DiagramOverlayView(overlay: overlay)
-                    .transition(.opacity)
-            }
-            
-            // Camera error overlay
-            if let cameraError = cameraService.error {
-                VStack(spacing: 16) {
-                    Image(systemName: "camera.fill")
-                        .font(.system(size: 60))
-                        .foregroundColor(.red)
+        let _ = print("🎬 ARSessionView.body rendering")
+        GeometryReader { geometry in
+            ZStack {
+                // Main split layout
+                VStack(spacing: 0) {
+                    // Top: Video Snippet (Looping)
+                    if let config = lesson.aiTeacherConfig,
+                       visionService.currentStepIndex < config.steps.count,
+                       let clipUrl = config.steps[visionService.currentStepIndex].clipUrl,
+                       let url = resolveURL(path: clipUrl) {
+                        
+                        VideoPlayerView(url: url, opacity: .constant(1.0))
+                            .id(visionService.currentStepIndex) // Force refresh on step change
+                            .frame(height: geometry.size.height * 0.35)
+                            .overlay(alignment: .bottomTrailing) {
+
+                                Button {
+                                    showGhostControls.toggle()
+                                } label: {
+                                    Image(systemName: showGhostControls ? "eye.slash" : "eye")
+                                        .padding(8)
+                                        .background(.ultraThinMaterial)
+                                        .clipShape(Circle())
+                                        .foregroundColor(.white)
+                                }
+                                .padding(8)
+                            }
+                    } else if let config = lesson.aiTeacherConfig, visionService.currentStepIndex < config.steps.count {
+                        // Fallback purely for layout when no video
+                         Color.black
+                            .frame(height: geometry.size.height * 0.35)
+                            .overlay {
+                                Text("No video snippet available")
+                                    .foregroundColor(.white.opacity(0.5))
+                            }
+                    }
                     
-                    Text("Camera Error")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                    
-                    Text(cameraError)
-                        .foregroundColor(.white.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                    
-                    Button("Open Settings") {
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(url)
+                    // Bottom: Camera Feed + Local AI Overlay
+                    ZStack {
+                        CameraPreviewView(cameraService: cameraService)
+                            .ignoresSafeArea(edges: .bottom)
+                        
+                        // Ghost Overlay (Video overlaid on camera)
+                        if showGhostControls,
+                           let config = lesson.aiTeacherConfig,
+                           visionService.currentStepIndex < config.steps.count,
+                           let clipUrl = config.steps[visionService.currentStepIndex].clipUrl,
+                           let url = resolveURL(path: clipUrl) {
+                            
+                            VideoPlayerView(url: url, opacity: $ghostOpacity)
+                                .allowsHitTesting(false)
+                        }
+
+                        
+                        // Mistake Overlay (Cloud/Local)
+                        if showOverlay, let overlay = currentOverlay {
+                            DiagramOverlayView(overlay: overlay)
+                                .transition(.opacity)
+                        }
+                        
+                        // Verification State Overlay
+                        VerificationStateOverlay(state: visionService.verificationState)
+                        
+                        // Local Vision Overlay (Skeleton)
+                        if let bodyPose = visionService.currentBodyPose {
+                             SkeletonView(bodyPose: bodyPose)
+                                .allowsHitTesting(false)
+                        }
+                        
+                        // Ghost Controls Slider
+                        if showGhostControls {
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Text("Ghost:")
+                                        .font(.caption)
+                                        .foregroundColor(.white)
+                                    Slider(value: $ghostOpacity, in: 0...1)
+                                }
+                                .padding()
+                                .background(.ultraThinMaterial)
+                                .cornerRadius(12)
+                                .padding()
+                                .padding(.bottom, 60) // clear bottom bar
+                            }
                         }
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.purple)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.black.opacity(0.9))
-            }
-            
-            // UI Layer
-            VStack {
-                // Top bar
-                TopBarView(
-                    lesson: lesson,
-                    onDismiss: { dismiss() },
-                    isPaused: isPaused,
-                    onTogglePause: { isPaused.toggle() }
-                )
+                .ignoresSafeArea(edges: .bottom)
                 
-                Spacer()
-                
-                // Step progress
-                if let config = lesson.aiTeacherConfig {
-                    StepProgressView(
-                        config: config,
-                        currentStep: visionService.currentStepIndex,
-                        confidence: visionService.stepConfidence
-                    )
-                    .padding(.horizontal)
-                }
-                
-                // Bottom controls
-                if showControls {
-                    BottomControlsView(
-                        visionService: visionService,
-                        audioService: audioService,
+                // UI Layer (Floating)
+                VStack {
+                    // Top bar
+                    TopBarView(
+                        lesson: lesson,
+                        onDismiss: { dismiss() },
                         isPaused: isPaused,
-                        showOverlay: showOverlay,
-                        onTriggerMistake: triggerMistakeDemo,
-                        onAdvanceStep: { visionService.manualAdvanceStep() },
-                        onToggleOverlay: { showOverlay.toggle() },
-                        onReplayAudio: replayAudio
+                        onTogglePause: { isPaused.toggle() }
                     )
+                    
+                    Spacer()
+                    
+                    // Step progress
+                    if let config = lesson.aiTeacherConfig {
+                        StepProgressView(
+                            config: config,
+                            currentStep: visionService.currentStepIndex,
+                            confidence: visionService.stepConfidence
+                        )
+                        .padding(.horizontal)
+                    }
+                    
+                    // Bottom controls
+                    if showControls {
+                        BottomControlsView(
+                            visionService: visionService,
+                            audioService: audioService,
+                            isPaused: isPaused,
+                            showOverlay: showOverlay,
+                            onTriggerMistake: triggerMistakeDemo,
+                            onAdvanceStep: { visionService.manualAdvanceStep() },
+                            onToggleOverlay: { showOverlay.toggle() },
+                            onReplayAudio: replayAudio
+                        )
+                    }
                 }
-            }
-            
-            // Pause overlay
-            if isPaused {
-                PauseOverlayView(onResume: { isPaused = false })
+                
+                // Camera error overlay
+                if let cameraError = cameraService.error {
+                    VStack(spacing: 16) {
+                        Image(systemName: "camera.fill")
+                            .font(.system(size: 60))
+                            .foregroundColor(.red)
+                        Text("Camera Error")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Text(cameraError)
+                            .foregroundColor(.white.opacity(0.8))
+                        Button("Open Settings") {
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.purple)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.black.opacity(0.9))
+                }
+                
+                // Pause overlay
+                if isPaused {
+                    PauseOverlayView(onResume: { isPaused = false })
+                }
             }
         }
         .onAppear {
@@ -115,32 +202,45 @@ struct ARSessionView: View {
     }
     
     private func setupSession() {
-        // Configure vision service with lesson
+        print("📱 ARSessionView.setupSession() called")
         if let config = lesson.aiTeacherConfig {
-            visionService.configure(with: config)
+            print("📱 Lesson has \(config.steps.count) steps")
+            visionService.configure(with: config, networkService: networkService)
+        } else {
+            print("📱 Lesson has NO AI config")
         }
         
-        // Set up callbacks
-        visionService.onMistakeDetected = { mistakeType, confidence in
-            handleMistakeDetected(mistakeType: mistakeType, confidence: confidence)
-        }
-        
+        // Handle step completion (for audio announcement)
         visionService.onStepCompleted = { stepIndex in
             handleStepCompleted(stepIndex: stepIndex)
         }
         
-        // Connect camera to vision service
+        // Handle mistake detected by VLM
+        visionService.onMistakeDetected = { reason, suggestion in
+            if let suggestion = suggestion {
+                audioService.speak("Correction needed: \(reason). \(suggestion)")
+            } else {
+                audioService.speak("Correction needed: \(reason)")
+            }
+        }
+        
+        // Frame processing
         cameraService.onFrameCaptured = { image in
             if !isPaused {
                 visionService.processFrame(image)
             }
         }
         
-        // Start camera
         cameraService.start()
     }
     
     private func handleMistakeDetected(mistakeType: String, confidence: Double) {
+        // IMPROVEMENT: Instant Audio Feedback
+        // Don't wait for backend. Speak immediately.
+        let friendlyMistake = mistakeType.replacingOccurrences(of: "_", with: " ")
+        audioService.speak("Mistake detected: \(friendlyMistake). Checking details...")
+        
+        print("☁️ Remote Model: Sending mistake '\(mistakeType)' to backend for analysis...")
         Task {
             do {
                 let response = try await networkService.requestFeedback(
@@ -151,15 +251,14 @@ struct ARSessionView: View {
                     frameData: cameraService.captureCurrentFrame()
                 )
                 
+                print("☁️ Remote Model: Received feedback response")
+                
                 if let overlay = response.overlay {
                     await MainActor.run {
                         currentOverlay = overlay
                         showOverlay = true
-                        
-                        // Speak the correction
                         audioService.speak(overlay.audioText)
                         
-                        // Auto-hide overlay after duration
                         DispatchQueue.main.asyncAfter(deadline: .now() + overlay.durationSeconds) {
                             withAnimation {
                                 showOverlay = false
@@ -168,22 +267,24 @@ struct ARSessionView: View {
                     }
                 }
             } catch {
-                print("Failed to get feedback: \(error)")
+                // Feedback request failed
             }
         }
     }
     
     private func handleStepCompleted(stepIndex: Int) {
-        // Announce step completion
-        guard let config = lesson.aiTeacherConfig,
-              stepIndex < config.steps.count else { return }
+        guard let config = lesson.aiTeacherConfig else { return }
         
-        let completedStep = config.steps[stepIndex]
-        audioService.speak("Step \(stepIndex + 1) complete: \(completedStep.title)")
+        // Announce the NEXT step (we just finished stepIndex, now moving to stepIndex+1)
+        let nextStepIndex = stepIndex + 1
         
-        // Check if lesson is complete
-        if stepIndex == config.steps.count - 1 {
-            audioService.speak("Congratulations! You have completed the lesson.")
+        if nextStepIndex < config.steps.count {
+            let nextStep = config.steps[nextStepIndex]
+            // Speak the next step's instructions
+            audioService.speak("Step \(nextStepIndex + 1): \(nextStep.title). \(nextStep.description)")
+        } else {
+            // All steps done
+            audioService.speak("Congratulations! You have completed all steps.")
         }
     }
     
@@ -196,22 +297,47 @@ struct ARSessionView: View {
             audioService.speak(overlay.audioText)
         }
     }
+    
+    private func resolveURL(path: String) -> URL? {
+        return networkService.resolveURL(path: path)
+    }
 }
+
 
 // MARK: - Subviews
 
 struct CameraPreviewView: UIViewRepresentable {
     @ObservedObject var cameraService: CameraService
     
+    func makeCoordinator() -> Coordinator {
+        Coordinator(cameraService: cameraService)
+    }
+    
     func makeUIView(context: Context) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .black
+        context.coordinator.imageView = imageView
         return imageView
     }
     
     func updateUIView(_ uiView: UIImageView, context: Context) {
-        uiView.image = cameraService.currentFrame
+        // Use coordinator for updates
+        context.coordinator.imageView = uiView
+    }
+    
+    class Coordinator: NSObject {
+        weak var imageView: UIImageView?
+        private var cancellable: AnyCancellable?
+        
+        init(cameraService: CameraService) {
+            super.init()
+            cancellable = cameraService.$currentFrame
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] image in
+                    self?.imageView?.image = image
+                }
+        }
     }
 }
 
@@ -295,7 +421,7 @@ struct StepProgressView: View {
                         Text(step.description)
                             .font(.caption)
                             .foregroundColor(.white.opacity(0.7))
-                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     
                     Spacer()
@@ -442,50 +568,94 @@ struct PauseOverlayView: View {
     }
 }
 
-#Preview {
-    ARSessionView(lesson: Lesson(
-        id: "test",
-        title: "Test Lesson",
-        demoVideoUrl: "",
-        aiTeacherConfig: TeacherConfig(
-            lessonId: "test",
-            totalSteps: 3,
-            steps: [
-                Step(
-                    stepId: 1,
-                    title: "Insert wire",
-                    description: "Insert the wire into the terminal",
-                    expectedObjects: ["wire", "terminal"],
-                    expectedMotion: "forward_insertion",
-                    expectedDurationSeconds: 10,
-                    mistakePatterns: [
-                        MistakePattern(type: "misaligned", description: "Wire is not aligned")
-                    ],
-                    correctionMode: "diagram_overlay_audio"
-                ),
-                Step(
-                    stepId: 2,
-                    title: "Tighten screw",
-                    description: "Use screwdriver to tighten",
-                    expectedObjects: ["screwdriver"],
-                    expectedMotion: "rotation_clockwise",
-                    expectedDurationSeconds: 15,
-                    mistakePatterns: [],
-                    correctionMode: "diagram_overlay_audio"
-                ),
-                Step(
-                    stepId: 3,
-                    title: "Test connection",
-                    description: "Verify the connection is secure",
-                    expectedObjects: [],
-                    expectedMotion: "pulling",
-                    expectedDurationSeconds: 5,
-                    mistakePatterns: [],
-                    correctionMode: "diagram_overlay_audio"
-                )
-            ]
-        ),
-        createdAt: "2026-01-11T10:00:00Z"
-    ))
-    .environmentObject(NetworkService())
+// MARK: - Verification State Overlay
+
+struct VerificationStateOverlay: View {
+    let state: VerificationState
+    
+    var body: some View {
+        Group {
+            switch state {
+            case .observing:
+                EmptyView()
+                
+            case .readyToVerify:
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Label("Hold still...", systemImage: "hand.raised.fill")
+                            .font(.caption)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(20)
+                            .foregroundColor(.yellow)
+                        Spacer()
+                    }
+                    .padding(.bottom, 150)
+                }
+                
+            case .verifying:
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        HStack(spacing: 8) {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            Text("Verifying...")
+                                .font(.caption)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.purple.opacity(0.9))
+                        .cornerRadius(20)
+                        Spacer()
+                    }
+                    .padding(.bottom, 150)
+                }
+                
+            case .verified:
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Label("Perfect!", systemImage: "checkmark.circle.fill")
+                            .font(.headline)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 12)
+                            .background(Color.green)
+                            .cornerRadius(25)
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.bottom, 150)
+                }
+                .transition(.scale.combined(with: .opacity))
+                
+            case .needsCorrection(let reason):
+                VStack {
+                    Spacer()
+                    VStack(spacing: 8) {
+                        Label(reason, systemImage: "exclamationmark.triangle.fill")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                        Text("Try again")
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 14)
+                    .background(Color.orange.opacity(0.9))
+                    .cornerRadius(16)
+                    .padding(.bottom, 150)
+                }
+                .transition(.scale.combined(with: .opacity))
+            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: state)
+    }
 }
+

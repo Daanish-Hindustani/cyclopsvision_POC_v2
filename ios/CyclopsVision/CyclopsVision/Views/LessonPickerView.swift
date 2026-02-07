@@ -4,7 +4,7 @@ struct LessonPickerView: View {
     @EnvironmentObject var lessonStore: LessonStore
     @EnvironmentObject var networkService: NetworkService
     @State private var selectedLesson: Lesson?
-    @State private var showingARSession = false
+    // showingARSession is no longer needed
     
     var body: some View {
         NavigationStack {
@@ -19,8 +19,9 @@ struct LessonPickerView: View {
                         LazyVStack(spacing: 16) {
                             ForEach(lessonStore.lessons) { lesson in
                                 LessonCardView(lesson: lesson) {
+                                    print("👆 LessonPickerView: Tapped lesson: \(lesson.title)")
                                     selectedLesson = lesson
-                                    showingARSession = true
+                                    // Item-based presentation triggers automatically when selectedLesson != nil
                                 }
                             }
                         }
@@ -40,10 +41,11 @@ struct LessonPickerView: View {
                     }
                 }
             }
-            .fullScreenCover(isPresented: $showingARSession) {
-                if let lesson = selectedLesson {
-                    ARSessionView(lesson: lesson)
-                }
+
+            .fullScreenCover(item: $selectedLesson) { lesson in
+                print("📺 LessonPickerView: Presenting SimpleLessonView for \(lesson.title)")
+                SimpleLessonView(lesson: lesson)
+                    .environmentObject(networkService)
             }
             .onAppear {
                 lessonStore.setNetworkService(networkService)

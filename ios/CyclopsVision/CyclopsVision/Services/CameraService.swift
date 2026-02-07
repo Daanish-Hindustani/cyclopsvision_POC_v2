@@ -6,14 +6,16 @@ class CameraService: NSObject, ObservableObject {
     @Published var currentFrame: UIImage?
     @Published var isRunning = false
     @Published var error: String?
+    private var frameCount: Int = 0
     
     private var captureSession: AVCaptureSession?
     private var videoOutput: AVCaptureVideoDataOutput?
     private let sessionQueue = DispatchQueue(label: "camera.session.queue")
     private let outputQueue = DispatchQueue(label: "camera.output.queue")
     
-    private var frameCounter = 0
-    private let frameSampleRate = 6 // Sample every 6th frame (~5 FPS at 30 FPS input)
+    // Optimizations
+    private let context = CIContext()
+    private let frameSampleRate = 3 // Every 3rd frame ~10 FPS
     
     var onFrameCaptured: ((UIImage) -> Void)?
     
@@ -24,13 +26,15 @@ class CameraService: NSObject, ObservableObject {
     
     private func setupCaptureSession() {
         captureSession = AVCaptureSession()
-        captureSession?.sessionPreset = .high
-        
         guard let session = captureSession else { return }
         
-        // Get the camera
+        // FIX 1: Begin configuration block
+        session.beginConfiguration()
+        session.sessionPreset = .vga640x480
+        
         guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
             error = "No camera available"
+            session.commitConfiguration()
             return
         }
         
@@ -41,7 +45,6 @@ class CameraService: NSObject, ObservableObject {
                 session.addInput(input)
             }
             
-            // Configure video output
             videoOutput = AVCaptureVideoDataOutput()
             videoOutput?.videoSettings = [
                 kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
@@ -52,26 +55,34 @@ class CameraService: NSObject, ObservableObject {
             if let output = videoOutput, session.canAddOutput(output) {
                 session.addOutput(output)
                 
-                // Set video orientation
-                if let connection = output.connection(with: .video) {
-                    if connection.isVideoRotationAngleSupported(90) {
-                        connection.videoRotationAngle = 90
-                    }
+                // FIX 3: Use videoOrientation instead of videoRotationAngle
+                if let connection = output.connection(with: .video),
+                   connection.isVideoOrientationSupported {
+                    connection.videoOrientation = .portrait
                 }
             }
             
         } catch {
             self.error = "Failed to setup camera: \(error.localizedDescription)"
         }
+        
+        // FIX 1: Commit configuration block
+        session.commitConfiguration()
     }
     
     func start() {
-        // Check camera permission first
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        print("📷 CameraService.start() called")
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        print("📷 Camera authorization status: \(status.rawValue)")
+        
+        switch status {
         case .authorized:
+            print("📷 Camera authorized, starting session")
             startSession()
         case .notDetermined:
+            print("📷 Camera not determined, requesting access")
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                print("📷 Camera access response: \(granted)")
                 if granted {
                     self?.startSession()
                 } else {
@@ -81,28 +92,34 @@ class CameraService: NSObject, ObservableObject {
                 }
             }
         case .denied, .restricted:
+            print("📷 Camera denied/restricted")
             DispatchQueue.main.async { [weak self] in
                 self?.error = "Camera access denied. Please enable in Settings."
             }
         @unknown default:
+            print("📷 Unknown camera status")
             break
         }
     }
     
     private func startSession() {
         sessionQueue.async { [weak self] in
-            self?.captureSession?.startRunning()
+            guard let self = self, let session = self.captureSession, !session.isRunning else { return }
+            session.startRunning()
             DispatchQueue.main.async {
-                self?.isRunning = true
+                self.isRunning = true
+                self.error = nil
+                print("📷 Camera session is now running")
             }
         }
     }
     
     func stop() {
         sessionQueue.async { [weak self] in
-            self?.captureSession?.stopRunning()
+            guard let self = self, let session = self.captureSession, session.isRunning else { return }
+            session.stopRunning()
             DispatchQueue.main.async {
-                self?.isRunning = false
+                self.isRunning = false
             }
         }
     }
@@ -119,15 +136,14 @@ extension CameraService: AVCaptureVideoDataOutputSampleBufferDelegate {
         didOutput sampleBuffer: CMSampleBuffer,
         from connection: AVCaptureConnection
     ) {
-        frameCounter += 1
+        // FIX 2: Increment frameCount once at the top, no race condition
+        frameCount += 1
         
-        // Only process every Nth frame for efficiency
-        guard frameCounter % frameSampleRate == 0 else { return }
+        guard frameCount % frameSampleRate == 0 else { return }
         
         guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         
         let ciImage = CIImage(cvPixelBuffer: imageBuffer)
-        let context = CIContext()
         
         guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return }
         

@@ -10,12 +10,12 @@ class NetworkService: ObservableObject {
     private var baseURL: String
     private let session: URLSession
     
-    init(baseURL: String = "http://192.168.0.149:8000") {
+    init(baseURL: String = "http://192.168.0.156:8000") {
         self.baseURL = baseURL
         
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 30
-        config.timeoutIntervalForResource = 60
+        config.timeoutIntervalForRequest = 120  // VLM can be slow
+        config.timeoutIntervalForResource = 180
         self.session = URLSession(configuration: config)
         
         Task {
@@ -95,14 +95,6 @@ class NetworkService: ObservableObject {
         confidence: Double,
         frameData: Data? = nil
     ) async throws -> FeedbackResponse {
-        guard let url = URL(string: "\(baseURL)/ai/feedback") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         let feedbackRequest = FeedbackRequest(
             lessonId: lessonId,
             stepId: stepId,
@@ -111,8 +103,64 @@ class NetworkService: ObservableObject {
             frameBase64: frameData?.base64EncodedString()
         )
         
+        return try await performRequest(endpoint: "/api/ai/feedback", body: feedbackRequest, responseType: FeedbackResponse.self)
+    }
+    
+    // MARK: - Verification
+    
+    struct VerificationRequest: Codable {
+        let lesson_id: String
+        let step_id: Int
+        let step_title: String
+        let step_description: String
+        let frames_base64: [String]
+    }
+    
+    struct VerificationResponse: Codable {
+        let status: String  // "in_progress", "complete", "mistake"
+        let reason: String
+        let confidence: Double
+        let suggestion: String?
+    }
+    
+    func verifyStep(
+        lessonId: String,
+        stepId: Int,
+        stepTitle: String,
+        stepDescription: String,
+        frames: [Data]
+    ) async throws -> VerificationResponse {
+        guard !frames.isEmpty else {
+            throw NetworkError.invalidData
+        }
+        
+        let framesBase64 = frames.map { $0.base64EncodedString() }
+        
+        let request = VerificationRequest(
+            lesson_id: lessonId,
+            step_id: stepId,
+            step_title: stepTitle,
+            step_description: stepDescription,
+            frames_base64: framesBase64
+        )
+        
+        return try await performRequest(endpoint: "/api/verify_step", body: request, responseType: VerificationResponse.self)
+    }
+
+    
+    // MARK: - Private Helpers
+    
+    private func performRequest<T: Codable, U: Codable>(endpoint: String, body: T, responseType: U.Type) async throws -> U {
+        guard let url = URL(string: "\(baseURL)\(endpoint)") else {
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         let encoder = JSONEncoder()
-        request.httpBody = try encoder.encode(feedbackRequest)
+        request.httpBody = try encoder.encode(body)
         
         let (data, response) = try await session.data(for: request)
         
@@ -122,7 +170,17 @@ class NetworkService: ObservableObject {
         }
         
         let decoder = JSONDecoder()
-        return try decoder.decode(FeedbackResponse.self, from: data)
+        return try decoder.decode(U.self, from: data)
+    }
+    // MARK: - Helper
+    
+    func resolveURL(path: String) -> URL? {
+        if path.hasPrefix("http") {
+            return URL(string: path)
+        }
+        
+        let cleanPath = path.hasPrefix("/") ? path : "/\(path)"
+        return URL(string: "\(baseURL)\(cleanPath)")
     }
 }
 
@@ -130,6 +188,7 @@ enum NetworkError: LocalizedError {
     case invalidURL
     case requestFailed
     case decodingFailed
+    case invalidData
     
     var errorDescription: String? {
         switch self {
@@ -139,6 +198,8 @@ enum NetworkError: LocalizedError {
             return "Request failed"
         case .decodingFailed:
             return "Failed to decode response"
+        case .invalidData:
+            return "Invalid data"
         }
     }
 }

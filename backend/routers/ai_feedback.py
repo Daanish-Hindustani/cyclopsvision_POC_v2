@@ -105,8 +105,8 @@ async def health_check():
         gemini = get_gemini_service()
         return {
             "status": "healthy",
-            "ai_service": "gemini",
-            "model": "gemini-1.5-flash"
+            "ai_service": "openai",
+            "model": "gpt-4o"
         }
     except Exception as e:
         return {

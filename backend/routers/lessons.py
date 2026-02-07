@@ -9,7 +9,7 @@ from pathlib import Path
 import uuid
 
 from models import Lesson, LessonCreate, LessonResponse, TeacherConfig
-from services import video_processor, get_gemini_service, lesson_storage
+from services import video_processor, get_ai_video_service, lesson_storage
 
 router = APIRouter(prefix="/lessons", tags=["lessons"])
 
@@ -81,49 +81,37 @@ async def create_lesson(
         # Save initial lesson
         lesson_storage.create(lesson)
         
-        # Process video with AI
+        # Process video with AI (sends whole video for analysis)
         try:
-            # Extract frames
-            frames = video_processor.extract_frames(video_path, num_frames=10)
+            # Get AI service based on AI_PROVIDER env var
+            ai_service = get_ai_video_service()
             
-            if frames:
-                # Analyze with AI (now Ollama)
-                ai_service = get_gemini_service()
-                teacher_config = await ai_service.analyze_video_for_steps(
-                    frames_base64=frames,
-                    lesson_title=title,
-                    video_duration=video_duration
-                )
-                
-                # Extract clips for each step
-                if teacher_config.steps:
-                    for step in teacher_config.steps:
-                        if step.start_time >= 0 and step.end_time > step.start_time:
-                            clip_filename = f"{lesson.id}_step_{step.step_id}.mp4"
-                            clip_path = video_processor.extract_clip(
-                                video_path,
-                                step.start_time,
-                                step.end_time,
-                                clip_filename
-                            )
-                            if clip_path:
-                                step.clip_url = f"/lessons/{lesson.id}/clips/{step.step_id}"
-                
-                # Update lesson with config
-                lesson_storage.update(lesson.id, {
-                    "ai_teacher_config": teacher_config
-                })
-                lesson.ai_teacher_config = teacher_config
-            else:
-                # Fallback if frame extraction fails
-                lesson.ai_teacher_config = TeacherConfig(
-                    lesson_id=lesson.id,
-                    total_steps=1,
-                    steps=[]
-                )
-                lesson_storage.update(lesson.id, {
-                    "ai_teacher_config": lesson.ai_teacher_config
-                })
+            # Analyze video - returns steps with exact timestamps
+            teacher_config = await ai_service.analyze_video(
+                video_path=video_path,
+                title=title
+            )
+            teacher_config.lesson_id = lesson.id
+            
+            # Extract clips for each step using AI-provided timestamps
+            if teacher_config.steps:
+                for step in teacher_config.steps:
+                    if step.start_time >= 0 and step.end_time > step.start_time:
+                        clip_filename = f"{lesson.id}_step_{step.step_id}.mp4"
+                        clip_path = video_processor.extract_clip(
+                            video_path,
+                            step.start_time,
+                            step.end_time,
+                            clip_filename
+                        )
+                        if clip_path:
+                            step.clip_url = f"/lessons/{lesson.id}/clips/{step.step_id}"
+            
+            # Update lesson with config
+            lesson_storage.update(lesson.id, {
+                "ai_teacher_config": teacher_config
+            })
+            lesson.ai_teacher_config = teacher_config
                 
         except Exception as e:
             print(f"AI processing error: {e}")
@@ -194,6 +182,47 @@ async def get_step_clip(lesson_id: str, step_id: int):
         clip_path,
         media_type="video/mp4",
         filename=f"step_{step_id}.mp4"
+    )
+
+
+@router.post("/{lesson_id}/regenerate-clips", response_model=LessonResponse)
+async def regenerate_clips(lesson_id: str):
+    """
+    Regenerate video clips for each step of an existing lesson.
+    Useful if clips were not created initially or need to be recreated.
+    """
+    lesson = lesson_storage.get(lesson_id)
+    
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    
+    if not lesson.ai_teacher_config or not lesson.ai_teacher_config.steps:
+        raise HTTPException(status_code=400, detail="Lesson has no steps to extract clips from")
+    
+    # Extract clips for each step
+    for step in lesson.ai_teacher_config.steps:
+        if step.start_time >= 0 and step.end_time > step.start_time:
+            clip_filename = f"{lesson.id}_step_{step.step_id}.mp4"
+            clip_path = video_processor.extract_clip(
+                lesson.demo_video_url,
+                step.start_time,
+                step.end_time,
+                clip_filename
+            )
+            if clip_path:
+                step.clip_url = f"/lessons/{lesson.id}/clips/{step.step_id}"
+    
+    # Update lesson storage with clip URLs
+    lesson_storage.update(lesson.id, {
+        "ai_teacher_config": lesson.ai_teacher_config
+    })
+    
+    return LessonResponse(
+        id=lesson.id,
+        title=lesson.title,
+        demo_video_url=lesson.demo_video_url,
+        ai_teacher_config=lesson.ai_teacher_config,
+        created_at=lesson.created_at.isoformat()
     )
 
 

@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-from routers import lessons_router, ai_feedback_router
+from routers import lessons_router, ai_feedback_router, verification, tts
 
 
 @asynccontextmanager
@@ -27,10 +27,11 @@ async def lifespan(app: FastAPI):
     Path("storage/videos").mkdir(parents=True, exist_ok=True)
     
     # Check for API key
-    if not os.getenv("GEMINI_API_KEY"):
-        print("⚠️  Warning: GEMINI_API_KEY not set. AI features will be unavailable.")
+    # Check for API key
+    if not os.getenv("OPENAI_API_KEY"):
+        print("⚠️  Warning: OPENAI_API_KEY not set. AI features will be unavailable.")
     else:
-        print("✅ Gemini API key configured")
+        print("✅ OpenAI API key configured")
     
     yield
     
@@ -47,7 +48,7 @@ app = FastAPI(
     ## Features
     
     - **Lesson Creation**: Upload demo videos to automatically generate training lessons
-    - **AI Step Extraction**: Gemini AI analyzes videos to extract procedural steps
+    - **AI Step Extraction**: OpenAI GPT-4o analyzes videos to extract procedural steps
     - **Real-time Feedback**: Generate diagram-style overlays for mistake correction
     
     ## Endpoints
@@ -74,8 +75,11 @@ app.add_middleware(
 app.mount("/storage", StaticFiles(directory="storage"), name="storage")
 
 # Include routers
-app.include_router(lessons_router)
-app.include_router(ai_feedback_router)
+# Include routers
+app.include_router(lessons_router) # Preserved at root for existing clients
+app.include_router(ai_feedback_router, prefix="/api")
+app.include_router(verification.router, prefix="/api")
+app.include_router(tts.router, prefix="/api")
 
 
 @app.get("/")

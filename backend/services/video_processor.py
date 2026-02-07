@@ -136,7 +136,7 @@ class VideoProcessor:
             
             # Create temp file for audio
             audio_path = tempfile.mktemp(suffix=".wav")
-            clip.audio.write_audiofile(audio_path, verbose=False, logger=None)
+            clip.audio.write_audiofile(audio_path, logger=None)
             clip.close()
             
             return audio_path
@@ -213,7 +213,6 @@ class VideoProcessor:
                 codec="libx264",
                 audio_codec="aac",
                 bitrate="1000k",
-                verbose=False,
                 logger=None
             )
             

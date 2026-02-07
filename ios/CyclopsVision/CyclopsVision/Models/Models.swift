@@ -39,6 +39,11 @@ struct Step: Codable, Identifiable {
     let mistakePatterns: [MistakePattern]
     let correctionMode: String
     
+    // New fields for Version 2 (local AI)
+    var clipUrl: String?
+    var localFeedbackRules: [String: String]?
+    var requiredTools: [String]?
+    
     var id: Int { stepId }
     
     enum CodingKeys: String, CodingKey {
@@ -49,6 +54,9 @@ struct Step: Codable, Identifiable {
         case expectedDurationSeconds = "expected_duration_seconds"
         case mistakePatterns = "mistake_patterns"
         case correctionMode = "correction_mode"
+        case clipUrl = "clip_url"
+        case localFeedbackRules = "local_feedback_rules"
+        case requiredTools = "required_tools"
     }
 }
 
