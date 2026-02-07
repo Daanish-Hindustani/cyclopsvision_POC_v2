@@ -320,6 +320,10 @@ class OpenAIVideoService(AIVideoService):
         import openai
         self.client = openai.AsyncOpenAI(api_key=self.api_key)
         self.model = "gpt-4o"
+        
+        # Initialize TTS service
+        from services.tts_service import get_tts_service
+        self.tts_service = get_tts_service()
     
     async def analyze_video(self, video_path: str, title: str = "") -> TeacherConfig:
         """Extract frames and send to GPT-4o for analysis"""
@@ -349,9 +353,34 @@ class OpenAIVideoService(AIVideoService):
         
         system_prompt = build_video_analysis_prompt(title)
         
-        # Add frame timestamp info to the user prompt
+        # Extract and transcribe audio
+        transcript_text = ""
+        try:
+            audio_path = video_processor.extract_audio(video_path)
+            if audio_path:
+                print(f"[OpenAI] Extracted audio to {audio_path}, transcribing...")
+                with open(audio_path, "rb") as audio_file:
+                    transcript = await self.client.audio.transcriptions.create(
+                        model="whisper-1",
+                        file=audio_file
+                    )
+                transcript_text = transcript.text
+                print(f"[OpenAI] Transcription: {transcript_text[:100]}...")
+                
+                # Cleanup temp audio
+                os.remove(audio_path)
+            else:
+                print("[OpenAI] No audio track found or extraction failed")
+        except Exception as e:
+            print(f"[OpenAI] Audio transcription failed: {e}")
+
+        # Add frame timestamp info AND transcript to the user prompt
+        prompt_text = f"Video duration: {duration:.1f}s. Frame timestamps:\n" + "\n".join(frame_times)
+        if transcript_text:
+            prompt_text += f"\n\nAUDIO TRANSCRIPT:\n{transcript_text}"
+            
         user_content = [
-            {"type": "text", "text": f"Video duration: {duration:.1f}s. Frame timestamps:\n" + "\n".join(frame_times)}
+            {"type": "text", "text": prompt_text}
         ]
         
         # Add images
@@ -389,21 +418,14 @@ class OpenAIVideoService(AIVideoService):
                     # but for now usage is flat or needs simple path. 
                     # Actually, let's keep it simple: storage/audio/{filename}
                     
-                    await self._generate_audio(step.instruction, audio_path)
+                    await self.tts_service.generate_audio(step.instruction, audio_path)
                     step.audio_url = f"/storage/audio/{audio_filename}"
                 except Exception as e:
                     print(f"[OpenAI] Failed to generate audio for step {step.step_id}: {e}")
         
         return config
 
-    async def _generate_audio(self, text: str, output_path: str):
-        """Generate TTS audio using OpenAI"""
-        response = await self.client.audio.speech.create(
-            model="tts-1",
-            voice="alloy",
-            input=text
-        )
-        response.stream_to_file(output_path)
+    # _generate_audio removed, use tts_service instead
 
     async def generate_correction_overlay(self, step: Step, mistake_type: str, frame_base64: Optional[str] = None) -> dict:
         """Generate diagram overlay instructions for a detected mistake using GPT-4o"""

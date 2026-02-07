@@ -11,3 +11,5 @@ moviepy>=1.0.3
 Pillow>=10.0.0
 httpx
 openai>=1.0.0
+kokoro>=0.3.4
+soundfile>=0.12.1

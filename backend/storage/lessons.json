@@ -392,5 +392,138 @@
       ]
     },
     "created_at": "2026-02-07T17:10:06.218467"
+  },
+  {
+    "id": "c29ef239-2d66-42ad-ad06-46d3414813d2",
+    "title": "Untitled Lesson",
+    "demo_video_url": "storage/videos/d36e3fbb-7db9-4fdc-9658-398f2e2467e2.mov",
+    "ai_teacher_config": {
+      "lesson_id": "c29ef239-2d66-42ad-ad06-46d3414813d2",
+      "total_steps": 7,
+      "steps": [
+        {
+          "step_id": 1,
+          "title": "Position the light",
+          "description": "**Goal:** Prepare the light for disassembly\n**Action:** Hold the light in both hands\n**Mistakes:** Not securing the light properly",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Hold the light firmly with both hands.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_1.mp3",
+          "start_time": 7.9,
+          "end_time": 15.7,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/1"
+        },
+        {
+          "step_id": 2,
+          "title": "Remove screws",
+          "description": "**Goal:** Open the light casing\n**Tools:** screwdriver\n**Action:** Use a screwdriver to remove screws\n**Mistakes:** Using the wrong screwdriver size; Stripping the screws",
+          "expected_objects": [
+            "screwdriver",
+            "light"
+          ],
+          "expected_motion": "rotation_counterclockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Use the screwdriver to remove the screws from the casing.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_2.mp3",
+          "start_time": 15.7,
+          "end_time": 31.5,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/2"
+        },
+        {
+          "step_id": 3,
+          "title": "Separate casing",
+          "description": "**Goal:** Access the internal components\n**Action:** Pull apart the light casing\n**Mistakes:** Forcing the casing open; Damaging the casing",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Gently pull apart the light casing.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_3.mp3",
+          "start_time": 31.5,
+          "end_time": 47.2,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/3"
+        },
+        {
+          "step_id": 4,
+          "title": "Remove bulb",
+          "description": "**Goal:** Take out the bulb for replacement\n**Action:** Carefully remove the bulb from the socket\n**Mistakes:** Breaking the bulb; Touching the bulb with bare hands",
+          "expected_objects": [
+            "bulb"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Carefully remove the bulb from the socket.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_4.mp3",
+          "start_time": 47.2,
+          "end_time": 62.9,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/4"
+        },
+        {
+          "step_id": 5,
+          "title": "Insert new bulb",
+          "description": "**Goal:** Replace the old bulb with a new one\n**Action:** Insert the new bulb into the socket\n**Mistakes:** Not securing the bulb properly; Touching the bulb with bare hands",
+          "expected_objects": [
+            "new bulb"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Insert the new bulb into the socket.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_5.mp3",
+          "start_time": 62.9,
+          "end_time": 78.6,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/5"
+        },
+        {
+          "step_id": 6,
+          "title": "Reassemble casing",
+          "description": "**Goal:** Close the light casing\n**Action:** Align and press the casing halves together\n**Mistakes:** Misaligning the casing; Forcing the casing closed",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "pressing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Align and press the casing halves together.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_6.mp3",
+          "start_time": 78.6,
+          "end_time": 94.4,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/6"
+        },
+        {
+          "step_id": 7,
+          "title": "Secure screws",
+          "description": "**Goal:** Ensure the casing is tightly closed\n**Tools:** screwdriver\n**Action:** Use a screwdriver to tighten the screws\n**Mistakes:** Over-tightening screws; Using the wrong screwdriver size",
+          "expected_objects": [
+            "screwdriver",
+            "light"
+          ],
+          "expected_motion": "rotation_clockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Use the screwdriver to tighten the screws.",
+          "audio_url": "/storage/audio/d36e3fbb-7db9-4fdc-9658-398f2e2467e2_step_7.mp3",
+          "start_time": 94.4,
+          "end_time": 110.1,
+          "clip_url": "/lessons/c29ef239-2d66-42ad-ad06-46d3414813d2/clips/7"
+        }
+      ]
+    },
+    "created_at": "2026-02-07T18:17:17.185807"
   }
 ]
