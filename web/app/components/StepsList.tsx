@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Step } from "@/lib/api";
 
 interface StepsListProps {
@@ -104,7 +106,11 @@ export default function StepsList({ steps, loading }: StepsListProps) {
                                         </div>
                                     )}
                                 </div>
-                                <p className="text-gray-400 mt-1">{step.description}</p>
+                                <div className="text-gray-400 mt-1 prose prose-invert prose-sm max-w-none">
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                        {step.description}
+                                    </ReactMarkdown>
+                                </div>
 
                                 {/* Video Clip - Only shows when expanded */}
                                 {hasClip && isExpanded && (

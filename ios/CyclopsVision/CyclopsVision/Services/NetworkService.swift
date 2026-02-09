@@ -10,7 +10,7 @@ class NetworkService: ObservableObject {
     private var baseURL: String
     private let session: URLSession
     
-    init(baseURL: String = "http://192.168.0.156:8000") {
+    init(baseURL: String = "http://192.168.0.131:8000") {
         self.baseURL = baseURL
         
         let config = URLSessionConfiguration.default

@@ -12,7 +12,7 @@ class AudioService: ObservableObject {
     private let synthesizer = AVSpeechSynthesizer()
     private var delegate: AudioServiceDelegate?
     
-    init(baseURL: String = "http://192.168.0.156:8000") {
+    init(baseURL: String = "http://192.168.0.131:8000") {
         self.baseURL = baseURL
         delegate = AudioServiceDelegate(service: self)
         synthesizer.delegate = delegate
@@ -23,6 +23,46 @@ class AudioService: ObservableObject {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print("Audio session error: \(error)")
+        }
+    }
+    
+    func play(url: URL) {
+        // Stop any current speech
+        stop()
+        
+        // Resolve URL if needed (though caller should pass resolved URL)
+        // Check if it's absolute
+        var audioURL = url
+        if url.scheme == nil {
+             if let resolved = URL(string: "\(baseURL)\(url.path)") {
+                 audioURL = resolved
+             }
+        }
+        
+        print("🔊 Playing audio from: \(audioURL)")
+        
+        Task {
+            do {
+                let (data, response) = try await session.data(from: audioURL)
+                 guard let httpResponse = response as? HTTPURLResponse,
+                       httpResponse.statusCode == 200 else {
+                     print("❌ Audio download failed")
+                     return
+                 }
+                
+                await MainActor.run {
+                    do {
+                        self.player = try AVAudioPlayer(data: data)
+                        self.player?.delegate = self.delegate
+                        self.player?.play()
+                        self.isSpeaking = true
+                    } catch {
+                        print("❌ Audio playback error: \(error)")
+                    }
+                }
+            } catch {
+                print("❌ Audio fetch error: \(error)")
+            }
         }
     }
     

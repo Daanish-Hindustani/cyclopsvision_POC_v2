@@ -44,6 +44,10 @@ struct Step: Codable, Identifiable {
     var localFeedbackRules: [String: String]?
     var requiredTools: [String]?
     
+    // Audio/Voice Guidance
+    var instruction: String?
+    var audioUrl: String?
+    
     var id: Int { stepId }
     
     enum CodingKeys: String, CodingKey {
@@ -57,6 +61,8 @@ struct Step: Codable, Identifiable {
         case clipUrl = "clip_url"
         case localFeedbackRules = "local_feedback_rules"
         case requiredTools = "required_tools"
+        case instruction
+        case audioUrl = "audio_url"
     }
 }
 

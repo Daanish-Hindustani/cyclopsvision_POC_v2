@@ -188,10 +188,37 @@ struct SimpleLessonView: View {
             speechSynthesizer.stopSpeaking(at: .immediate)
         }
         
-        let utterance = AVSpeechUtterance(string: step.description)
+        // 1. Try playing pre-generated audio URL
+        if let audioUrl = step.audioUrl, let url = networkService.resolveURL(path: audioUrl) {
+            print("🔊 Playing audio from URL: \(url)")
+            // SimpleLessonView uses local AVSpeechSynthesizer, but we should use a player for URL
+            // Since we don't have AudioService here, let's play it using AVPlayer
+            playAudioFromURL(url)
+            return
+        }
+        
+        // 2. Try speaking the specific instruction
+        if let instruction = step.instruction, !instruction.isEmpty {
+            speakText(instruction)
+            return
+        }
+        
+        // 3. Fallback to description
+        speakText(step.description)
+    }
+    
+    private func speakText(_ text: String) {
+        let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = 0.5
-        
         speechSynthesizer.speak(utterance)
+    }
+    
+    @State private var audioPlayer: AVPlayer?
+    
+    private func playAudioFromURL(_ url: URL) {
+        let playerItem = AVPlayerItem(url: url)
+        audioPlayer = AVPlayer(playerItem: playerItem)
+        audioPlayer?.play()
     }
 }

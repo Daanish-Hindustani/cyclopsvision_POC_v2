@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		16C3AA742F170AEA00C458A7 /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C3AA722F170AEA00C458A7 /* SkeletonView.swift */; };
 		16C3AA752F170AEA00C458A7 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C3AA732F170AEA00C458A7 /* VideoPlayerView.swift */; };
+		16F2325E2F37E09400EEBB60 /* SimpleLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F2325D2F37E09400EEBB60 /* SimpleLessonView.swift */; };
 		1A1A1A1A1A1A1A1A /* CyclopsVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A2A2A2A2A2A2A /* CyclopsVisionApp.swift */; };
 		1A1A1A1A1A1A1A1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A2A2A2A2A2A2B /* ContentView.swift */; };
 		1A1A1A1A1A1A1A1C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2A2A2A2A2A2A2C /* Models.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		16C3AA722F170AEA00C458A7 /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
 		16C3AA732F170AEA00C458A7 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		16F2325D2F37E09400EEBB60 /* SimpleLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLessonView.swift; sourceTree = "<group>"; };
 		2A2A2A2A2A2A2A2A /* CyclopsVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclopsVisionApp.swift; sourceTree = "<group>"; };
 		2A2A2A2A2A2A2A2B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2A2A2A2A2A2A2A2C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 		AAAAAAAAAAAAAAAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				16F2325D2F37E09400EEBB60 /* SimpleLessonView.swift */,
 				16C3AA722F170AEA00C458A7 /* SkeletonView.swift */,
 				16C3AA732F170AEA00C458A7 /* VideoPlayerView.swift */,
 				2A2A2A2A2A2A2A32 /* LessonPickerView.swift */,
@@ -202,6 +205,7 @@
 				1A1A1A1A1A1A1A1F /* CameraService.swift in Sources */,
 				1A1A1A1A1A1A1A20 /* VisionService.swift in Sources */,
 				1A1A1A1A1A1A1A21 /* AudioService.swift in Sources */,
+				16F2325E2F37E09400EEBB60 /* SimpleLessonView.swift in Sources */,
 				1A1A1A1A1A1A1A22 /* LessonPickerView.swift in Sources */,
 				1A1A1A1A1A1A1A23 /* ARSessionView.swift in Sources */,
 				1A1A1A1A1A1A1A24 /* DiagramOverlayView.swift in Sources */,

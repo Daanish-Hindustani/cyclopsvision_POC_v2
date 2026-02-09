@@ -44,10 +44,10 @@ For each step, you must identify:
     {{
       "step_id": 1,
       "title": "Short action title",
-      "goal": "Why is this step being done?",
+      "goal": "Detailed explanation of why this step is meaningful.",
       "tools": ["tool1", "tool2"],
-      "action_detail": "Precise description of the movement",
-      "common_mistakes": ["Mistake 1", "Mistake 2"],
+      "action_detail": "Comprehensive description of the movement, angle, and force required.",
+      "common_mistakes": ["Mistake 1 description", "Mistake 2 description"],
       "instruction": "Speakable instruction for the user e.g. 'Rotate the driver clockwise until it clicks'",
       "start_time": 2.5,
       "end_time": 5.0,
@@ -96,7 +96,7 @@ class AIVideoService(ABC):
             
             steps = []
             for s in steps_data:
-                # Construct rich description
+                # Construct rich description with Markdown
                 goal = s.get("goal", "")
                 tools = s.get("tools", [])
                 action = s.get("action_detail", "")
@@ -104,19 +104,24 @@ class AIVideoService(ABC):
                 
                 description_parts = []
                 if goal:
-                    description_parts.append(f"**Goal:** {goal}")
-                if tools:
-                    description_parts.append(f"**Tools:** {', '.join(tools)}")
+                    description_parts.append(f"### Goal\n{goal}")
+                
                 if action:
-                    description_parts.append(f"**Action:** {action}")
+                    description_parts.append(f"### Action\n{action}")
+
+                if tools:
+                    tools_list = "\n".join([f"- {tool}" for tool in tools])
+                    description_parts.append(f"### Tools\n{tools_list}")
+                
                 if mistakes:
-                    description_parts.append(f"**Mistakes:** {'; '.join(mistakes)}")
+                    mistakes_list = "\n".join([f"- {mistake}" for mistake in mistakes])
+                    description_parts.append(f"### Common Mistakes\n{mistakes_list}")
                 
                 # Fallback if new fields are empty (backward compatibility)
                 if not description_parts and "description" in s:
                     description = s["description"]
                 else:
-                    description = "\n".join(description_parts)
+                    description = "\n\n".join(description_parts)
 
 
                 step = Step(

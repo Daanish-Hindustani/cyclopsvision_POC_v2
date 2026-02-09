@@ -94,6 +94,8 @@ OUTPUT FORMAT (JSON only):
 }}
 
 GUIDELINES:
+- CHECK TOOL USAGE: Verify that the user is using the specific tools mentioned in the step description.
+- If the WRONG tool is used, mark status as "mistake" and reason as "Wrong tool".
 - Be patient: Don't mark complete until you're CERTAIN the result is correct
 - Be helpful: If there's a clear mistake, identify it specifically
 - Most frames will be "in_progress" - that's normal

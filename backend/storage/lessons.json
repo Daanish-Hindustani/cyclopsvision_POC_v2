@@ -532,5 +532,387 @@
     "demo_video_url": "storage/videos/ef8e8012-deea-45d1-bb49-877d76b48595.mov",
     "ai_teacher_config": null,
     "created_at": "2026-02-07T18:42:34.421477"
+  },
+  {
+    "id": "928d7c1d-96c0-42a1-be7a-282068d58e76",
+    "title": "TestV2",
+    "demo_video_url": "storage/videos/ed75b630-57ed-46f2-94fd-6103512e4452.mov",
+    "ai_teacher_config": {
+      "lesson_id": "928d7c1d-96c0-42a1-be7a-282068d58e76",
+      "total_steps": 7,
+      "steps": [
+        {
+          "step_id": 1,
+          "title": "Position the light",
+          "description": "**Goal:** Prepare the light for disassembly\n**Action:** Hold the light with both hands\n**Mistakes:** Not holding the light securely",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Hold the light firmly with both hands",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_1.mp3",
+          "start_time": 7.9,
+          "end_time": 15.7,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/1"
+        },
+        {
+          "step_id": 2,
+          "title": "Unscrew the light cover",
+          "description": "**Goal:** Remove the cover from the light\n**Tools:** screwdriver\n**Action:** Use a screwdriver to remove screws\n**Mistakes:** Using the wrong screwdriver size; Stripping the screws",
+          "expected_objects": [
+            "screwdriver",
+            "light"
+          ],
+          "expected_motion": "rotation_counterclockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Use the screwdriver to remove the screws from the cover",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_2.mp3",
+          "start_time": 15.7,
+          "end_time": 31.5,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/2"
+        },
+        {
+          "step_id": 3,
+          "title": "Remove the light cover",
+          "description": "**Goal:** Access the internal components\n**Action:** Lift the cover off the light\n**Mistakes:** Forgetting to remove all screws; Forcing the cover off",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Gently lift the cover off the light",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_3.mp3",
+          "start_time": 31.5,
+          "end_time": 39.3,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/3"
+        },
+        {
+          "step_id": 4,
+          "title": "Disconnect the bulb",
+          "description": "**Goal:** Remove the bulb from the socket\n**Action:** Twist and pull the bulb out\n**Mistakes:** Breaking the bulb; Not twisting before pulling",
+          "expected_objects": [
+            "bulb"
+          ],
+          "expected_motion": "rotation_counterclockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Twist and pull the bulb out of the socket",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_4.mp3",
+          "start_time": 39.3,
+          "end_time": 55.1,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/4"
+        },
+        {
+          "step_id": 5,
+          "title": "Insert the new bulb",
+          "description": "**Goal:** Replace the old bulb with a new one\n**Action:** Align and insert the new bulb\n**Mistakes:** Not aligning the bulb correctly; Forcing the bulb into the socket",
+          "expected_objects": [
+            "bulb"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Align and insert the new bulb into the socket",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_5.mp3",
+          "start_time": 55.1,
+          "end_time": 70.8,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/5"
+        },
+        {
+          "step_id": 6,
+          "title": "Reattach the light cover",
+          "description": "**Goal:** Secure the cover back onto the light\n**Action:** Place the cover back onto the light\n**Mistakes:** Not aligning the cover correctly; Forgetting to secure the cover",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Place the cover back onto the light",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_6.mp3",
+          "start_time": 70.8,
+          "end_time": 86.5,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/6"
+        },
+        {
+          "step_id": 7,
+          "title": "Screw the cover back on",
+          "description": "**Goal:** Secure the cover with screws\n**Tools:** screwdriver\n**Action:** Use a screwdriver to tighten screws\n**Mistakes:** Over-tightening screws; Using the wrong screwdriver size",
+          "expected_objects": [
+            "screwdriver",
+            "light"
+          ],
+          "expected_motion": "rotation_clockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Use the screwdriver to tighten the screws on the cover",
+          "audio_url": "/storage/audio/ed75b630-57ed-46f2-94fd-6103512e4452_step_7.mp3",
+          "start_time": 86.5,
+          "end_time": 102.2,
+          "clip_url": "/lessons/928d7c1d-96c0-42a1-be7a-282068d58e76/clips/7"
+        }
+      ]
+    },
+    "created_at": "2026-02-07T18:57:52.353245"
+  },
+  {
+    "id": "f8614412-67fa-40b9-83cf-237c5bddc356",
+    "title": "TestPOC2",
+    "demo_video_url": "storage/videos/140f6f6b-97aa-48b0-a68a-9d6d1015e259.mov",
+    "ai_teacher_config": {
+      "lesson_id": "f8614412-67fa-40b9-83cf-237c5bddc356",
+      "total_steps": 7,
+      "steps": [
+        {
+          "step_id": 1,
+          "title": "Position the light",
+          "description": "### Goal\nPrepare the light for disassembly.\n\n### Action\nHold the light firmly with both hands.\n\n### Common Mistakes\n- Not securing the light properly, leading to slipping.",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "holding",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Hold the light firmly with both hands.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_1.mp3",
+          "start_time": 7.9,
+          "end_time": 15.7,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/1"
+        },
+        {
+          "step_id": 2,
+          "title": "Remove the screws",
+          "description": "### Goal\nOpen the light casing by unscrewing.\n\n### Action\nUse a screwdriver to rotate the screws counterclockwise.\n\n### Tools\n- screwdriver\n\n### Common Mistakes\n- Using the wrong screwdriver size.\n- Turning the screws the wrong way.",
+          "expected_objects": [
+            "screwdriver",
+            "light"
+          ],
+          "expected_motion": "rotation_counterclockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Use the screwdriver to unscrew the screws counterclockwise.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_2.mp3",
+          "start_time": 15.7,
+          "end_time": 31.5,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/2"
+        },
+        {
+          "step_id": 3,
+          "title": "Separate the casing",
+          "description": "### Goal\nAccess the internal components of the light.\n\n### Action\nGently pull apart the casing halves.\n\n### Common Mistakes\n- Forcing the casing, which may cause damage.",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Gently pull apart the casing halves.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_3.mp3",
+          "start_time": 31.5,
+          "end_time": 39.3,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/3"
+        },
+        {
+          "step_id": 4,
+          "title": "Remove the bulb",
+          "description": "### Goal\nTake out the bulb for replacement or inspection.\n\n### Action\nCarefully lift the bulb out of its socket.\n\n### Common Mistakes\n- Touching the bulb with bare hands, which can leave oil residues.",
+          "expected_objects": [
+            "bulb"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Carefully lift the bulb out of its socket.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_4.mp3",
+          "start_time": 39.3,
+          "end_time": 55.1,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/4"
+        },
+        {
+          "step_id": 5,
+          "title": "Insert new bulb",
+          "description": "### Goal\nPlace a new bulb into the socket.\n\n### Action\nAlign the new bulb and gently press it into the socket.\n\n### Common Mistakes\n- Not aligning the bulb correctly, leading to improper seating.",
+          "expected_objects": [
+            "bulb"
+          ],
+          "expected_motion": "pressing",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Align the new bulb and gently press it into the socket.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_5.mp3",
+          "start_time": 55.1,
+          "end_time": 70.8,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/5"
+        },
+        {
+          "step_id": 6,
+          "title": "Reassemble the casing",
+          "description": "### Goal\nClose the light casing securely.\n\n### Action\nFit the casing halves together.\n\n### Common Mistakes\n- Not aligning the casing properly, causing gaps.",
+          "expected_objects": [
+            "light"
+          ],
+          "expected_motion": "connecting",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Fit the casing halves together.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_6.mp3",
+          "start_time": 70.8,
+          "end_time": 86.5,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/6"
+        },
+        {
+          "step_id": 7,
+          "title": "Secure the screws",
+          "description": "### Goal\nTighten the screws to secure the casing.\n\n### Action\nUse a screwdriver to rotate the screws clockwise.\n\n### Tools\n- screwdriver\n\n### Common Mistakes\n- Over-tightening the screws, which can strip the threads.",
+          "expected_objects": [
+            "screwdriver",
+            "light"
+          ],
+          "expected_motion": "rotation_clockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Use the screwdriver to tighten the screws clockwise.",
+          "audio_url": "/storage/audio/140f6f6b-97aa-48b0-a68a-9d6d1015e259_step_7.mp3",
+          "start_time": 86.5,
+          "end_time": 102.2,
+          "clip_url": "/lessons/f8614412-67fa-40b9-83cf-237c5bddc356/clips/7"
+        }
+      ]
+    },
+    "created_at": "2026-02-07T19:12:20.558347"
+  },
+  {
+    "id": "d46e5253-239f-4370-be44-c71ddbdac6a9",
+    "title": "Untitled Lesson",
+    "demo_video_url": "storage/videos/66196292-de49-4af2-8db5-c01d8ae5c717.mov",
+    "ai_teacher_config": {
+      "lesson_id": "d46e5253-239f-4370-be44-c71ddbdac6a9",
+      "total_steps": 6,
+      "steps": [
+        {
+          "step_id": 1,
+          "title": "Position the light fixture",
+          "description": "### Goal\nPrepare the light fixture for disassembly.\n\n### Action\nHold the light fixture steady on the table.\n\n### Common Mistakes\n- Not holding the fixture securely, causing it to move.",
+          "expected_objects": [
+            "light fixture"
+          ],
+          "expected_motion": "positioning",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Hold the light fixture steady on the table.",
+          "audio_url": "/storage/audio/66196292-de49-4af2-8db5-c01d8ae5c717_step_1.mp3",
+          "start_time": 7.9,
+          "end_time": 15.7,
+          "clip_url": "/lessons/d46e5253-239f-4370-be44-c71ddbdac6a9/clips/1"
+        },
+        {
+          "step_id": 2,
+          "title": "Remove the screws",
+          "description": "### Goal\nOpen the light fixture by removing screws.\n\n### Action\nUse a screwdriver to unscrew the screws from the fixture.\n\n### Tools\n- screwdriver\n\n### Common Mistakes\n- Using the wrong screwdriver size.\n- Stripping the screws.",
+          "expected_objects": [
+            "screwdriver",
+            "light fixture"
+          ],
+          "expected_motion": "rotation_counterclockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Unscrew the screws from the fixture using the screwdriver.",
+          "audio_url": "/storage/audio/66196292-de49-4af2-8db5-c01d8ae5c717_step_2.mp3",
+          "start_time": 15.7,
+          "end_time": 31.5,
+          "clip_url": "/lessons/d46e5253-239f-4370-be44-c71ddbdac6a9/clips/2"
+        },
+        {
+          "step_id": 3,
+          "title": "Separate the fixture cover",
+          "description": "### Goal\nAccess the internal components of the light fixture.\n\n### Action\nGently lift and separate the cover from the fixture.\n\n### Common Mistakes\n- Forcing the cover and damaging it.",
+          "expected_objects": [
+            "light fixture"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Gently lift the cover off the fixture.",
+          "audio_url": "/storage/audio/66196292-de49-4af2-8db5-c01d8ae5c717_step_3.mp3",
+          "start_time": 31.5,
+          "end_time": 39.3,
+          "clip_url": "/lessons/d46e5253-239f-4370-be44-c71ddbdac6a9/clips/3"
+        },
+        {
+          "step_id": 4,
+          "title": "Remove the bulb",
+          "description": "### Goal\nTake out the bulb from the fixture.\n\n### Action\nCarefully twist and pull the bulb out of its socket.\n\n### Common Mistakes\n- Breaking the bulb by applying too much force.",
+          "expected_objects": [
+            "bulb"
+          ],
+          "expected_motion": "pulling",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Twist and pull the bulb out of its socket.",
+          "audio_url": "/storage/audio/66196292-de49-4af2-8db5-c01d8ae5c717_step_4.mp3",
+          "start_time": 39.3,
+          "end_time": 55.1,
+          "clip_url": "/lessons/d46e5253-239f-4370-be44-c71ddbdac6a9/clips/4"
+        },
+        {
+          "step_id": 5,
+          "title": "Inspect the socket",
+          "description": "### Goal\nCheck the socket for any damage or debris.\n\n### Action\nVisually inspect the socket for any visible issues.\n\n### Common Mistakes\n- Not noticing small debris or damage.",
+          "expected_objects": [
+            "socket"
+          ],
+          "expected_motion": "holding",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Inspect the socket for any damage or debris.",
+          "audio_url": "/storage/audio/66196292-de49-4af2-8db5-c01d8ae5c717_step_5.mp3",
+          "start_time": 55.1,
+          "end_time": 62.9,
+          "clip_url": "/lessons/d46e5253-239f-4370-be44-c71ddbdac6a9/clips/5"
+        },
+        {
+          "step_id": 6,
+          "title": "Reassemble the fixture",
+          "description": "### Goal\nPut the light fixture back together.\n\n### Action\nAlign the cover and secure it with screws using a screwdriver.\n\n### Tools\n- screwdriver\n\n### Common Mistakes\n- Misaligning the cover.\n- Over-tightening the screws.",
+          "expected_objects": [
+            "screwdriver",
+            "light fixture"
+          ],
+          "expected_motion": "rotation_clockwise",
+          "expected_duration_seconds": 10,
+          "mistake_patterns": [],
+          "correction_mode": "diagram_overlay_audio",
+          "instruction": "Align the cover and secure it with screws.",
+          "audio_url": "/storage/audio/66196292-de49-4af2-8db5-c01d8ae5c717_step_6.mp3",
+          "start_time": 62.9,
+          "end_time": 78.6,
+          "clip_url": "/lessons/d46e5253-239f-4370-be44-c71ddbdac6a9/clips/6"
+        }
+      ]
+    },
+    "created_at": "2026-02-07T19:22:22.979982"
   }
 ]

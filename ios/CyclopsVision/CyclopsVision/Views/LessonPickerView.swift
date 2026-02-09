@@ -8,7 +8,7 @@ struct LessonPickerView: View {
     
     var body: some View {
         NavigationStack {
-            Group {
+            VStack {
                 if lessonStore.isLoading {
                     ProgressView("Loading lessons...")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -21,7 +21,6 @@ struct LessonPickerView: View {
                                 LessonCardView(lesson: lesson) {
                                     print("👆 LessonPickerView: Tapped lesson: \(lesson.title)")
                                     selectedLesson = lesson
-                                    // Item-based presentation triggers automatically when selectedLesson != nil
                                 }
                             }
                         }
@@ -30,21 +29,18 @@ struct LessonPickerView: View {
                 }
             }
             .navigationTitle("Lessons")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        Task {
-                            await lessonStore.loadLessons()
-                        }
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
+            .navigationBarItems(trailing:
+                Button {
+                    Task {
+                        await lessonStore.loadLessons()
                     }
+                } label: {
+                    Image(systemName: "arrow.clockwise")
                 }
-            }
-
+            )
             .fullScreenCover(item: $selectedLesson) { lesson in
-                print("📺 LessonPickerView: Presenting SimpleLessonView for \(lesson.title)")
-                SimpleLessonView(lesson: lesson)
+               
+                ARSessionView(lesson: lesson)
                     .environmentObject(networkService)
             }
             .onAppear {
@@ -56,7 +52,6 @@ struct LessonPickerView: View {
         }
     }
 }
-
 struct EmptyStateView: View {
     @EnvironmentObject var networkService: NetworkService
     
